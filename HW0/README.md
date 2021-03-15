@@ -3,4 +3,4 @@
 
 每6秒繞一圈
 
-![image](./orbig.png)
+<img src="./orbit.png" width="300">
