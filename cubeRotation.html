@@ -1,0 +1,127 @@
+<html>
+	<head>
+		<style>
+      #heading {
+        position: absolute; /*置頂*/
+        text-align: center; /*置中*/
+        top: 2vh;
+        width: 100vw; /*100 view point*/
+      }
+      canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+      }
+      body {
+        top:0;
+        left:0;
+        overflow: hidden;
+      }
+
+
+		</style>
+	</head>
+	<body>
+    <div id = "heading"> 
+      <h1 style = "color : pink">My First 3JS</h1>
+      <button id = 'toggle'> Press </button>
+    </div>
+    
+		<script src="https://threejs.org/build/three.min.js"></script>
+		<script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+
+		<script>
+      // FPS Display
+      javascript:(function(){var script=document.createElement('script');script.onload=function(){var stats=new Stats();document.body.appendChild(stats.dom);requestAnimationFrame(function loop(){stats.update();requestAnimationFrame(loop)});};script.src='https://mrdoob.github.io/stats.js/build/stats.min.js';document.head.appendChild(script);})()
+
+      // my script
+
+var clock = new THREE.Clock();
+var scene, renderer, camera;
+var cube;
+var angle = 0;
+var turn = 1;
+var controls;
+
+init();
+animate();
+
+function init()
+{
+
+  
+  renderer = new THREE.WebGLRenderer({antialias : true});
+
+  width = window.innerWidth;
+  height = window.innerHeight;
+
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  document.body.appendChild(renderer.domElement);
+  renderer.setClearColor(0x888888);
+  // create and start the renderer; choose antialias setting.
+
+
+  scene = new THREE.Scene();
+  var cubeGeometry = new THREE.BoxGeometry (10,10,10);
+  var cubeMaterial = new THREE.MeshLambertMaterial ({color: 0x1ec876});
+  //cubeMaterial = new THREE.MeshBasicMaterial ({color: 0xff0000, vertexColors: THREE.VertexColor});
+  cube = new THREE.Mesh (cubeGeometry, cubeMaterial);
+  cube.position.set (50, 0, 0);
+  scene.add (cube);
+
+  camera = new THREE.PerspectiveCamera (45, width/height, 0.1, 10000);
+  camera.position.y = 160;
+  camera.position.z = 300;
+  camera.lookAt (new THREE.Vector3(0,0,0));
+  
+  const controls = new THREE.OrbitControls(camera, renderer.domElement);//上帝視角
+
+  var skyboxGeometry = new THREE.BoxGeometry (1000,1000,1000);
+  var skyboxMaterial = new THREE.MeshBasicMaterial ({color: 0x1f1f1f, side:THREE.BackSide});
+  var skybox = new THREE.Mesh (skyboxGeometry, skyboxMaterial);
+  scene.add (skybox);
+
+  var gridHelper = new THREE.GridHelper(200, 20, 'red', 'white');
+  scene.add( gridHelper );
+
+  var pointLight = new THREE.PointLight (0xffffff);
+  pointLight.position.set (0,300,200);
+  scene.add (pointLight);
+  
+  window.addEventListener ('resize', onWindowResize, false);
+}
+
+function onWindowResize ()
+{
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize (window.innerWidth, window.innerHeight);
+}
+
+function animate()
+{
+  var dt = clock.getDelta();
+
+  var x = 50*Math.cos(angle);
+  var z = 50*Math.sin(angle);
+  cube.position.set (x,0,z);
+  
+  
+  cube.rotation.y -= 5*dt;
+  angle -= dt;
+  
+  requestAnimationFrame ( animate );  
+  render();  
+}
+
+
+function render()
+{
+  renderer.render (scene, camera);
+}
+
+
+		</script>
+	</body>
+</html>
