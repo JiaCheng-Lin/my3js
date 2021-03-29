@@ -124,6 +124,10 @@
 							var randomColor = Math.random() * 0xffffff;
 							this.light.color.setHex(randomColor);
 							this.mesh.material.color.set(randomColor);
+
+							var randomColor = Math.random() * 0xffffff;
+							pucks[j].light.color.setHex(randomColor);
+							pucks[j].mesh.material.color.set(randomColor);
 						}
 
 					}
@@ -291,7 +295,7 @@
 				//var dt = clock.getDelta();
 				for(i = 0;i<pucks.length; i++){
 					p = pucks[i];
-					p.position(pucks, walls, 0, 0.2); 
+					p.position(pucks, walls, 0, 0.15); 
 				}
 				
 				requestAnimationFrame(animate);
